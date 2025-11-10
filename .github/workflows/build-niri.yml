@@ -5,6 +5,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write  # 👈 permette di pushare tag e creare release
+
 jobs:
   build:
     name: Build Niri Binary
@@ -50,6 +53,8 @@ jobs:
         run: |
           TAG_NAME="auto-$(date +'%Y%m%d-%H%M%S')"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag $TAG_NAME
           git push origin $TAG_NAME
 
